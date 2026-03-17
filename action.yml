@@ -1,7 +1,32 @@
-name: "Jinja2 Portfolio Generator Docker"
-description: "Generates a portfolio HTML from GitHub repos using Python and Tailwind and deploys to GitHub Pages"
-
+name: "Run Jinja2 Portfolio"
+description: "Genera HTML desde plantillas Jinja2"
+inputs:
+  gh_token:
+    description: "Token de GitHub para push"
+    required: true
+  gh_username:
+    description: "Usuario de GitHub"
+    required: true
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  args: []
+  using: "composite"
+  steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.14
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      shell: bash
+
+    - name: Run portfolio
+      run: python index.py
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.gh_token }}
+        GH_USERNAME: ${{ inputs.gh_username }}
