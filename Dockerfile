@@ -2,8 +2,8 @@
 FROM python:3.14-slim
 
 # Variables de entorno (ejemplo, reemplaza si tienes otras)
-ENV GH_TOKEN=${GH_TOKEN}
-ENV GH_USERNAME=${GH_USERNAME}
+ENV GH_TOKEN=""
+ENV GH_USERNAME=""
 
 # Evita buffers en stdout/stderr para logs en tiempo real
 ENV PYTHONUNBUFFERED=1
