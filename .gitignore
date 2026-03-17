@@ -1,0 +1,7 @@
+dist/*
+*.exe
+.env
+
+
+data.json
+*.md 
