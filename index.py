@@ -228,9 +228,13 @@ def generate_html(data):
     template = env.get_template("index.html")
 
     html_output = template.render(user=data)
-    os.makedirs("dist", exist_ok=True)
+    # os.makedirs("dist", exist_ok=True)
 
-    with open("dist/index.html", "w", encoding="utf-8") as f:
+    # with open("dist/index.html", "w", encoding="utf-8") as f:
+    #     f.write(html_output)
+    # para gh pages b
+    output_path = "index.html"  # directo en root
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(html_output)
 
     print("HTML done")
