@@ -1,54 +1,14 @@
-name: "Jinja2 Portfolio Generator"
+name: "Jinja2 Portfolio Generator Docker"
 description: "Generates a portfolio HTML from GitHub repos using Python and Tailwind and deploys to GitHub Pages"
 
-# Inputs opcionales
 inputs:
   output_dir:
     description: "Directory where the portfolio HTML/CSS will be generated"
     required: false
     default: "dist"
 
-# Se define como composite action
 runs:
-  using: "composite"
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.x"
-
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-      shell: bash
-
-    - name: Generate HTML
-      run: python index.py
-      env:
-        GH_TOKEN: ${{ env.GH_TOKEN }}
-        GH_USERNAME: ${{ env.GH_USERNAME }}
-      shell: bash
-
-    - name: Download Tailwind CSS standalone binary
-      run: |
-        mkdir -p .tailwind
-        curl -L https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 -o .tailwind/tailwind
-        chmod +x .tailwind/tailwind
-      shell: bash
-
-    - name: Build Tailwind CSS
-      run: |
-        mkdir -p ${{ inputs.output_dir }}
-        ./.tailwind/tailwind -i ./input.css -o ./${{ inputs.output_dir }}/main.css --minify
-      shell: bash
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ env.GH_TOKEN }}
-        publish_dir: ./${{ inputs.output_dir }}
-        publish_branch: gh-pages
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.output_dir }}
