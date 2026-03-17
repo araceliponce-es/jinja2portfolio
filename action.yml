@@ -1,14 +1,7 @@
 name: "Jinja2 Portfolio Generator Docker"
 description: "Generates a portfolio HTML from GitHub repos using Python and Tailwind and deploys to GitHub Pages"
 
-inputs:
-  output_dir:
-    description: "Directory where the portfolio HTML/CSS will be generated"
-    required: false
-    default: "dist"
-
 runs:
   using: "docker"
   image: "Dockerfile"
-  args:
-    - ${{ inputs.output_dir }}
+  args: []
