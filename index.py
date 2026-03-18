@@ -145,6 +145,13 @@ def get_github_data(token, username):
     g = Github(auth=auth, per_page=100)
     user = g.get_user(username)
 
+    # Obtener todos los repos públicos y privados
+    # repos = user.get_repos(visibility="all", sort="updated") no
+    # repos = user.get_repos(type="owner", sort="updated") no
+    repos = user.get_repos()
+    repos_list = list(repos)
+    total_repos = len(repos_list)
+
     remaining = g.get_rate_limit().resources.core.remaining
     print("queda", remaining)
     if remaining < 50:
@@ -159,14 +166,6 @@ def get_github_data(token, username):
         "following": user.following,
         "repos": [],
     }
-
-    # Obtener todos los repos públicos y privados
-    # repos = user.get_repos(visibility="all", sort="updated") no
-    # repos = user.get_repos(type="owner", sort="updated") no
-    repos = g.get_user().get_repos()
-
-    repos_list = list(repos)
-    total_repos = len(repos_list)
 
     print(f"📦 Total repos encontrados: {total_repos}")
     print("───────────────────────────────────────")
