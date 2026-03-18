@@ -148,7 +148,7 @@ def get_github_data(token, username):
     # Obtener todos los repos públicos y privados
     # repos = user.get_repos(visibility="all", sort="updated") no
     # repos = user.get_repos(type="owner", sort="updated") no
-    repos = user.get_repos()
+    repos = g.get_user().get_repos()
     repos_list = list(repos)
     total_repos = len(repos_list)
 
@@ -192,7 +192,7 @@ def get_github_data(token, username):
         topics = [t.lower() for t in (topics or [])]
 
         # debug
-        # print(f"[{index}/{total_repos}] {repo.name} → topics: {topics}")
+        print(f"[{index}/{total_repos}] {repo.name} → topics: {topics}")
 
         # Determinar si el repo es destacado
         matches_topic = FEATURED_TAGS.intersection(topics)
