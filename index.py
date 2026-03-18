@@ -184,14 +184,21 @@ def get_github_data(token, username):
         if repo.fork or repo.archived:
             continue
 
-        # Obtener topics (PyGithub los incluye automáticamente)
-        topics = [t.lower() for t in (repo.topics or [])]
+        # Obtener topics puede fallar en actions
+        try:
+            topics = repo.get_topics()
+        except:
+            topics = []
+        topics = [t.lower() for t in (topics or [])]
 
         # debug
         # print(f"[{index}/{total_repos}] {repo.name} → topics: {topics}")
 
+        # Determinar si el repo es destacado
+        matches_topic = FEATURED_TAGS.intersection(topics)
+
         # Filtrar por tags
-        if FEATURED_TAGS.intersection(topics):
+        if matches_topic:
             matched += 1
 
             readme_text = get_readme(repo)
