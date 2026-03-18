@@ -8,7 +8,14 @@ import random
 from dotenv import load_dotenv
 import sys  # para usar argumentos... python index2.py --watch
 
-load_dotenv()
+# load_dotenv()
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+except:
+    pass
+
 CACHE_FILE = "data.json"
 
 REFRESH = "--watch" in sys.argv
@@ -224,7 +231,10 @@ def get_github_data(token, username):
 
 
 def generate_html(data):
-    env = Environment(loader=FileSystemLoader("templates"))
+    # env = Environment(loader=FileSystemLoader("templates"))
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    env = Environment(loader=FileSystemLoader(os.path.join(BASE_DIR, "templates")))
+
     template = env.get_template("index.html")
 
     html_output = template.render(user=data)
